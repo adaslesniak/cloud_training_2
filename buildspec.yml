@@ -1,0 +1,26 @@
+version: 0.2
+
+env:
+  variables:
+    ARTIFACT_BUCKET: aulendil-glporj2-artifacts
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.10
+  build:
+    commands:
+      - echo "Packaging all Lambdas…"
+      - |
+        for svc in pdf2txt searchGateway upload2search searchFunction; do
+          echo "  → $svc"
+          aws cloudformation package \
+            --template-file services/$svc/${svc}.yaml \
+            --s3-bucket $ARTIFACT_BUCKET \
+            --output-template-file ${svc}-packaged.yaml
+          aws s3 cp ${svc}-packaged.yaml s3://$ARTIFACT_BUCKET/
+        done
+
+artifacts:
+  files:
+    - '*-packaged.yaml'
