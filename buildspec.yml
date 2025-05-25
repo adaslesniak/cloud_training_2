@@ -10,7 +10,8 @@ phases:
       python: 3.10
     commands:
       - echo "Installing per-service dependencies…"
-      - for svc in pdf2txt searchGateway upload2search searchFunction; do
+      - |
+        for svc in pdf2txt searchGateway upload2search searchFunction; do
           if [ -f "services/$svc/requirements.txt" ]; then
             pip install -r "services/$svc/requirements.txt" -t "services/$svc"
           fi
