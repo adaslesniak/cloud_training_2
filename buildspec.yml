@@ -8,6 +8,8 @@ phases:
   install:
     runtime-versions:
       python: 3.10
+    commands:
+      pip install -r requirements.txt -t .
   build:
     commands:
       - echo "Packaging all Lambdas…"
